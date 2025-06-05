@@ -48,12 +48,20 @@ exports.getItemById = async (itemId) => {
 exports.addItem = async (data) => {
   const item = await itemDb.create({
     name: data.name,
+    description: data.description,
     price: data.price,
+    originalPrice: data.originalPrice,
     gender: data.gender,
     category: data.category,
+    weight: data.weight,
+    stock: data.stock,
     color: data.color,
     size: data.size,
-    weight: data.weight,
+    colors: data.colors,
+    sizes: data.sizes,
+    imageUrl: data.imageUrl,
+    tags: data.tags,
+    featured: data.featured || false,
     storeId: data.storeId,
   });
 
@@ -80,7 +88,25 @@ exports.updateItem = async (itemId, itemData) => {
     throw error;
   }
 
-  await item.update(itemData);
+  // Update with all possible fields
+  await item.update({
+    name: itemData.name,
+    description: itemData.description,
+    price: itemData.price,
+    originalPrice: itemData.originalPrice,
+    gender: itemData.gender,
+    category: itemData.category,
+    weight: itemData.weight,
+    stock: itemData.stock,
+    color: itemData.color,
+    size: itemData.size,
+    colors: itemData.colors,
+    sizes: itemData.sizes,
+    imageUrl: itemData.imageUrl,
+    tags: itemData.tags,
+    featured: itemData.featured,
+    storeId: itemData.storeId,
+  });
 
   return { item, message: "Item updated successfully!" };
 };
